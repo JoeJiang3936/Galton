@@ -47,7 +47,26 @@ Galton_heights%>%mutate(father_strata = factor(round(father)))%>%
   ggplot(aes(father_strata, son)) +
   geom_boxplot() +
   geom_point()
-  
+
+#plot father_strata heights with conditonal avg heigts of sons
+
+Galton_heights%>%mutate(father_strata = round(father))%>%
+  group_by(father_strata)%>%summarize(conditional_son_avg = mean(son))%>%
+  ggplot(aes(father_strata, conditional_son_avg)) +
+  geom_point()
+
+#plot with standard father vs son strata heights and line with slope of correlation r
+
+r <- Galton_heights%>%summarize(r = cor(father, son))%>%.$r
+
+Galton_heights%>%mutate(father_strata = round(father))%>%
+  group_by(father_strata)%>%
+  summarize(conditional_son_avg = mean(son))%>%
+  mutate(z_father = scale(father_strata), z_son = scale(conditional_son_avg))%>%
+  ggplot(aes(z_father, z_son)) +
+  geom_point() +
+  geom_abline(slope = r, intercept = 0)
+
 
 
 
