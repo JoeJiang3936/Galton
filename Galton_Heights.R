@@ -34,3 +34,20 @@ R <- replicate (B, {
 
 data.frame(R)%>%ggplot(aes(R)) + geom_histogram(bindwidth=.01, color="red")
 
+
+# conditional average height of sons from fathers about 72 inches tall 
+conditonal_avg <- Galton_heights%>%filter(round(father) == 72)%>%
+  summarize(son_avg = mean(son))%>%.$son_avg
+
+conditonal_avg
+
+#Boxplot of father and son strata heights
+
+Galton_heights%>%mutate(father_strata = factor(round(father)))%>%
+  ggplot(aes(father_strata, son)) +
+  geom_boxplot() +
+  geom_point()
+  
+
+
+
