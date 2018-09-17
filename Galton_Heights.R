@@ -84,3 +84,22 @@ b <- mu_y - m*mu_x
 Galton_heights%>%ggplot(aes(father, son)) +
   geom_point() +
   geom_abline(slope = m, intercept = b)
+
+
+# with standard units
+mu_x <- mean(Galton_heights$son)
+mu_y <- mean(Galton_heights$father)
+sigma_x <- sd(Galton_heights$son)
+sigma_y <- sd(Galton_heights$father)
+r <- cor(Galton_heights$father, Galton_heights$son)
+m <- r*sigma_y/sigma_x
+b <- mu_y - m*mu_x
+
+Galton_heights%>%ggplot(aes(scale(father), scale(son))) +
+  geom_point() +
+  geom_abline(slope = m, intercept = 0)
+
+
+
+
+
