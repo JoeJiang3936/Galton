@@ -11,9 +11,11 @@ Galton_heights <- GaltonFamilies%>%filter(childNum == 1 & gender == "male")%>%
 Galton_heights%>%summarize(mean(father), sd(father), mean(son), sd(son))
 
 Galton_heights%>%ggplot(aes(father, son)) +
-  geom_point
+  geom_point()
 
 Galton_heights%>%summarize(cor(father, son))
+
+#monte carlo simualtion
 
 B <- 10000
 N <- 25
@@ -67,6 +69,18 @@ Galton_heights%>%mutate(father_strata = round(father))%>%
   geom_point() +
   geom_abline(slope = r, intercept = 0)
 
+#add regression line
 
 
+#calcualte b and m, the intercept and slope
+mu_x <- mean(Galton_heights$son)
+mu_y <- mean(Galton_heights$father)
+sigma_x <- sd(Galton_heights$son)
+sigma_y <- sd(Galton_heights$father)
+r <- cor(Galton_heights$father, Galton_heights$son)
+m <- r*sigma_y/sigma_x
+b <- mu_y - m*mu_x
 
+Galton_heights%>%ggplot(aes(father, son)) +
+  geom_point() +
+  geom_abline(slope = m, intercept = b)
