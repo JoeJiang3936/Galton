@@ -99,7 +99,12 @@ Galton_heights%>%ggplot(aes(scale(father), scale(son))) +
   geom_point() +
   geom_abline(slope = m, intercept = 0)
 
+#qqplot for father strata vs son heights
 
-
+Galton_heights%>%mutate(father_z = round((father - mean(father))/sd(father)))%>%
+  filter (father_z %in% -2:2)%>%
+  ggplot() +
+  stat_qq(aes(sample = son)) + 
+  facet_wrap(~father_z)
 
 
